@@ -1,0 +1,28 @@
+{
+    "name": "digital-backstage/orange_juicer",
+    "description": "Produces XML metadata as per the Orange specifications",
+    "type": "project",
+    "config": {
+        "sort-packages": true
+    },
+    "require": {
+        "league/flysystem": "^1.0",
+        "mhor/php-mediainfo": "^3.0",
+        "symfony/console": "^3.2",
+        "symfony/dependency-injection": "^3.2",
+        "symfony/dotenv": "@dev",
+        "symfony/serializer": "^3.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "DigitalBackstage\\OrangeJuicer\\": "src"
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Grégoire Paris",
+            "email": "gparis@universcine.com"
+        }
+    ]
+}
