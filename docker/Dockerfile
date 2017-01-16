@@ -14,6 +14,7 @@ RUN apk -U upgrade && \
         make \
         g++ \
         shadow@community \
+        su-exec \
         xz \
         wget \
         zlib zlib-dev && \

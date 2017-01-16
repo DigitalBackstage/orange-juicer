@@ -17,8 +17,10 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 
-$dotEnv = new Dotenv();
-$dotEnv->load(__DIR__ . '/../.env');
+if (!isset($_ENV['FS_ROOT'])) {
+    $dotEnv = new Dotenv();
+    $dotEnv->load(__DIR__ . '/../.env');
+}
 
 $container = new ContainerBuilder();
 
