@@ -40,6 +40,10 @@ class ManifestGenerator
         string $audioLanguage,
         string $subtitlingLanguage = null
     ) {
+        $manifestPath = "$filePath.xml";
+        if ($this->filesystem->has($manifestPath)) {
+            throw new \RuntimeException("$manifestPath already exists!");
+        }
         $metadata = [];
         $metadata['title_1'] = $title;
         $metadata['multi_format_set']
@@ -65,7 +69,7 @@ class ManifestGenerator
         }
         array_multisort($metadata);
 
-        $this->filesystem->write("$filePath.xml", $this->encoder->encode(
+        $this->filesystem->write($manifestPath, $this->encoder->encode(
             ['product' => $metadata],
             'xml' /* duh! */,
             ['xml_format_output' => true, 'xml_encoding' => 'utf-8']

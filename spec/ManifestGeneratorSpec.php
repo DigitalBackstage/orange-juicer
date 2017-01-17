@@ -22,6 +22,7 @@ class ManifestGeneratorSpec extends ObjectBehavior
             $filesystem,
             []
         );
+        $filesystem->has(Argument::any())->willReturn(false);
         $filesystem->getSize(Argument::any())->willReturn(42);
         $filesystem->readStream(Argument::any())->willReturn('a stream');
     }
