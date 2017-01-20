@@ -38,6 +38,7 @@ $container->register('mediainfo', MediaInfo::class)
     ->setPublic(false);
 
 $container->register('manifest_encoder', XmlEncoder::class)
+    ->addArgument('product')
     ->setPublic(false);
 
 $container->register('hardcoded_data_provider', HardcodedDataProvider::class)

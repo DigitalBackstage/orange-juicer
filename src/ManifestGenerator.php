@@ -70,7 +70,7 @@ class ManifestGenerator
         array_multisort($metadata);
 
         $this->filesystem->write($manifestPath, $this->encoder->encode(
-            ['product' => $metadata],
+            $metadata,
             'xml' /* duh! */,
             ['xml_format_output' => true, 'xml_encoding' => 'utf-8']
         ));
