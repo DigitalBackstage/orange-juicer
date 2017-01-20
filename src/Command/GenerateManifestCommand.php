@@ -2,6 +2,7 @@
 
 namespace DigitalBackstage\OrangeJuicer\Command;
 
+use DigitalBackstage\OrangeJuicer\Console\OrangeJuicerStyle;
 use DigitalBackstage\OrangeJuicer\ManifestGenerator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -12,11 +13,15 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class GenerateManifestCommand extends Command
 {
     private $manifestGenerator;
+    private $availableLanguages;
 
-    public function __construct(ManifestGenerator $manifestGenerator)
-    {
+    public function __construct(
+        ManifestGenerator $manifestGenerator,
+        array $availableLanguages
+    ) {
         parent::__construct('generate-manifest');
         $this->manifestGenerator = $manifestGenerator;
+        $this->availableLanguages = $availableLanguages;
     }
 
     public function configure()
@@ -33,7 +38,7 @@ class GenerateManifestCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $commandIo = new SymfonyStyle($input, $output);
+        $commandIo = new OrangeJuicerStyle($input, $output);
         $commandIo->title("Let's generate a manifest, shall we?");
         $title = $commandIo->ask('Title', null, function ($value) {
             if (trim($value) === '') {
@@ -42,28 +47,16 @@ class GenerateManifestCommand extends Command
 
             return $value;
         });
-        $audioLanguage = $commandIo->ask('Audio language', null, function ($value) {
-            if (strlen($value) !== 3) {
-                throw new \UnexpectedValueException(
-                    'The audio language must be 3 letters long'
-                );
-            }
-
-            return $value;
-        });
-        $subtitlingLanguage = $commandIo->ask('Subtitle language (optional)', null, function ($value) {
-            if (is_null($value)) {
-                return $value;
-            }
-
-            if (strlen($value) !== 3) {
-                throw new \UnexpectedValueException(
-                    'The audio language must be 3 letters long'
-                );
-            }
-
-            return $value;
-        });
+        $audioLanguage = $commandIo->choice(
+            'Pick an audio language (defaults to french)',
+            $this->availableLanguages,
+            'FRA'
+        );
+        $subtitlingLanguage = $commandIo->choice(
+            'Pick a subtitle language (optional)',
+            $this->availableLanguages,
+            null
+        );
 
         $commandIo->note('Generating the manifest, this may take some time');
 

@@ -11,7 +11,8 @@
         "symfony/console": "^3.2",
         "symfony/dependency-injection": "^3.2",
         "symfony/dotenv": "@dev",
-        "symfony/serializer": "^3.2"
+        "symfony/serializer": "^3.2",
+        "symfony/yaml": "^3.2"
     },
     "autoload": {
         "psr-4": {

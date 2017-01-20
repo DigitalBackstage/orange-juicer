@@ -1,6 +1,7 @@
 <?php
 
 use DigitalBackstage\OrangeJuicer\Command\GenerateManifestCommand;
+use DigitalBackstage\OrangeJuicer\Command\ListAvailableLanguagesCommand;
 use DigitalBackstage\OrangeJuicer\ManifestGenerator;
 use DigitalBackstage\OrangeJuicer\Md5FileHasher;
 use DigitalBackstage\OrangeJuicer\MetadataProvider\ConfigurationProvider;
@@ -16,6 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Yaml\Yaml;
 
 if (!isset($_ENV['FS_ROOT'])) {
     $dotEnv = new Dotenv();
@@ -74,12 +76,26 @@ $container->register('manifest_generator', ManifestGenerator::class)
         ]
     ]);
 
+$container->setParameter(
+    'available_languages',
+    Yaml::parse(file_get_contents(__DIR__ . '/languages.yml'))
+);
+
 $container->register('generate_manifest_command', GenerateManifestCommand::class)
     ->setPublic(false)
-    ->addArgument(new Reference('manifest_generator'));
+    ->setArguments([
+        new Reference('manifest_generator'),
+        $container->getParameter('available_languages')
+    ]);
+
+$container->register('list_languages_command', ListAvailableLanguagesCommand::class)
+    ->setPublic(false)
+    ->addArgument($container->getParameter('available_languages'));
+
 
 $container->register('application', Application::class)
     ->addArgument('orange_juicer')
-    ->addMethodCall('add', [new Reference('generate_manifest_command')]);
+    ->addMethodCall('add', [new Reference('generate_manifest_command')])
+    ->addMethodCall('add', [new Reference('list_languages_command')]);
 
 return $container;
