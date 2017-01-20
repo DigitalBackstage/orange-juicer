@@ -52,9 +52,9 @@ class ManifestGenerator
         if ($subtitlingLanguage !== null) {
             $metadata['multi_format_set']
             ['encoding'] += [
-                'subtitling_open_caption_1' => false,
-                'subtitling_impairedhearing_1' => false,
-                'subtitling_burned_1' => true,
+                'subtitling_open_caption_1' => 'false',
+                'subtitling_impairedhearing_1' => 'false',
+                'subtitling_burned_1' => 'true',
                 'subtitling_language_1' => $subtitlingLanguage,
             ];
         }
