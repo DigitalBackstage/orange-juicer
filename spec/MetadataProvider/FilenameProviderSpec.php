@@ -27,4 +27,19 @@ class FilenameProviderSpec extends ObjectBehavior
                 ],
             ]);
     }
+
+    function it_takes_the_optional_suffix_into_account()
+    {
+        $this->setFilePath('CHOUFXXXXXXW0117603_MPEG50.mpg');
+        $this->provideData()
+            ->shouldReturn([
+                'id_won' => 'CHOUFXXXXXXW0117603',
+                'multi_format_set' => [
+                    'encoding' => [
+                        'job_id' => 'CHOUFXXXXXXW0117603',
+                        'file_name' => 'CHOUFXXXXXXW0117603_MPEG50.mpg',
+                    ]
+                ],
+            ]);
+    }
 }
