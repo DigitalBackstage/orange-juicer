@@ -17,7 +17,6 @@ class HardcodedDataProviderSpec extends ObjectBehavior
     {
         $this->provideData()->shouldReturn([
             'multi_format_set' => [
-                'type' => 'program',
                 'encoding' => [
                     'platform' => 'CMS',
                     'delivery' => 'CE',

@@ -42,4 +42,19 @@ class FilenameProviderSpec extends ObjectBehavior
                 ],
             ]);
     }
+
+    public function it_supports_trailer_suffix()
+    {
+        $this->setFilePath('CHOUFXXXXXXW0117603_MPEG15_Trailer.mpg');
+        $this->provideData()
+            ->shouldReturn([
+                'id_won' => 'CHOUFXXXXXXW0117603',
+                'multi_format_set' => [
+                    'encoding' => [
+                        'job_id' => 'CHOUFXXXXXXW0117603',
+                        'file_name' => 'CHOUFXXXXXXW0117603_MPEG15_Trailer.mpg',
+                    ]
+                ],
+            ]);
+    }
 }

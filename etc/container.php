@@ -8,7 +8,9 @@ use DigitalBackstage\OrangeJuicer\MetadataProvider\ConfigurationProvider;
 use DigitalBackstage\OrangeJuicer\MetadataProvider\FilenameProvider;
 use DigitalBackstage\OrangeJuicer\MetadataProvider\FilesystemProvider;
 use DigitalBackstage\OrangeJuicer\MetadataProvider\HardcodedDataProvider;
+use DigitalBackstage\OrangeJuicer\MetadataProvider\InputDataProvider;
 use DigitalBackstage\OrangeJuicer\MetadataProvider\MediaInfoProvider;
+use DigitalBackstage\OrangeJuicer\TrailerDetector;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use Mhor\MediaInfo\MediaInfo;
@@ -37,11 +39,18 @@ $container->register('file_hasher', Md5FileHasher::class);
 $container->register('mediainfo', MediaInfo::class)
     ->setPublic(false);
 
+$container->register('trailer_detector', TrailerDetector::class)
+    ->addArgument(new Reference('filesystem'))
+    ->setPublic(false);
+
 $container->register('manifest_encoder', XmlEncoder::class)
     ->addArgument('product')
     ->setPublic(false);
 
 $container->register('hardcoded_data_provider', HardcodedDataProvider::class)
+    ->setPublic(false);
+
+$container->register('input_data_provider', InputDataProvider::class)
     ->setPublic(false);
 
 $container->register('config_data_provider', ConfigurationProvider::class)
@@ -71,6 +80,7 @@ $container->register('manifest_generator', ManifestGenerator::class)
         [
             new Reference('hardcoded_data_provider'),
             new Reference('config_data_provider'),
+            new Reference('input_data_provider'),
             new Reference('filename_data_provider'),
             new Reference('mediainfo_data_provider'),
             new Reference('filesystem_data_provider'),
@@ -86,6 +96,7 @@ $container->register('generate_manifest_command', GenerateManifestCommand::class
     ->setPublic(false)
     ->setArguments([
         new Reference('manifest_generator'),
+        new Reference('trailer_detector'),
         $container->getParameter('available_languages')
     ]);
 

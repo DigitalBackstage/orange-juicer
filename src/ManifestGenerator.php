@@ -3,6 +3,7 @@
 namespace DigitalBackstage\OrangeJuicer;
 
 use DigitalBackstage\OrangeJuicer\MetadataProvider\FilePathAwareMetadataProvider;
+use DigitalBackstage\OrangeJuicer\MetadataProvider\InputAwareMetadataProvider;
 use DigitalBackstage\OrangeJuicer\MetadataProvider\MetadataProvider;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Serializer\Encoder\EncoderInterface;
@@ -34,33 +35,59 @@ class ManifestGenerator
         $this->metadataProviders[] = $metadataProvider;
     }
 
-    public function generateManifest(
+    public function generateProgramManifest(
         string $filePath,
         string $title,
         string $audioLanguage,
         string $subtitlingLanguage = null
+    ) {
+        return $this->generateManifest(
+            $filePath,
+            $title,
+            $audioLanguage,
+            $subtitlingLanguage,
+            false
+        );
+    }
+
+    public function generateTrailerManifest(
+        string $filePath,
+        string $title,
+        string $audioLanguage,
+        string $subtitlingLanguage = null
+    ) {
+        return $this->generateManifest(
+            $filePath,
+            $title,
+            $audioLanguage,
+            $subtitlingLanguage,
+            true
+        );
+    }
+
+    private function generateManifest(
+        string $filePath,
+        string $title,
+        string $audioLanguage,
+        string $subtitlingLanguage = null,
+        bool $isTrailer
     ) {
         $manifestPath = "$filePath.xml";
         if ($this->filesystem->has($manifestPath)) {
             throw new \RuntimeException("$manifestPath already exists!");
         }
         $metadata = [];
-        $metadata['title_1'] = $title;
-        $metadata['multi_format_set']
-            ['encoding']
-            ['audio_language_1'] = strtoupper($audioLanguage);
-        if ($subtitlingLanguage !== null) {
-            $metadata['multi_format_set']
-            ['encoding'] += [
-                'subtitling_open_caption_1' => 'false',
-                'subtitling_impairedhearing_1' => 'false',
-                'subtitling_burned_1' => 'true',
-                'subtitling_language_1' => $subtitlingLanguage,
-            ];
-        }
         foreach ($this->metadataProviders as $metadataProvider) {
             if ($metadataProvider instanceof FilePathAwareMetadataProvider) {
                 $metadataProvider->setFilePath($filePath);
+            }
+            if ($metadataProvider instanceof InputAwareMetadataProvider) {
+                $metadataProvider->setInput(compact(
+                    'isTrailer',
+                    'subtitlingLanguage',
+                    'audioLanguage',
+                    'title'
+                ));
             }
             $metadata = array_merge_recursive(
                 $metadata,

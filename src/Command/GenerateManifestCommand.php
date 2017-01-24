@@ -4,11 +4,11 @@ namespace DigitalBackstage\OrangeJuicer\Command;
 
 use DigitalBackstage\OrangeJuicer\Console\OrangeJuicerStyle;
 use DigitalBackstage\OrangeJuicer\ManifestGenerator;
+use DigitalBackstage\OrangeJuicer\TrailerDetector;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 class GenerateManifestCommand extends Command
 {
@@ -17,10 +17,12 @@ class GenerateManifestCommand extends Command
 
     public function __construct(
         ManifestGenerator $manifestGenerator,
+        TrailerDetector $trailerDetector,
         array $availableLanguages
     ) {
         parent::__construct('generate-manifest');
         $this->manifestGenerator = $manifestGenerator;
+        $this->trailerDetector = $trailerDetector;
         $this->availableLanguages = $availableLanguages;
     }
 
@@ -57,15 +59,31 @@ class GenerateManifestCommand extends Command
             $this->availableLanguages,
             null
         );
+        $filePath = $input->getArgument('filePath');
+
+        if ($this->trailerDetector->trailerExists($filePath)) {
+            $commandIo->comment('Detected the trailer');
+            $this->manifestGenerator->generateTrailerManifest(
+                $this->trailerDetector->getTrailerFilename($filePath),
+                $title,
+                $audioLanguage,
+                $subtitlingLanguage
+            );
+            $commandIo->success('The trailer manifest was successfully generated.');
+        } else {
+            $commandIo->note(
+                'No trailer detected, skipping to program manifest generation'
+            );
+        }
 
         $commandIo->note('Generating the manifest, this may take some time');
 
-        $this->manifestGenerator->generateManifest(
-            $input->getArgument('filePath'),
+        $this->manifestGenerator->generateProgramManifest(
+            $filePath,
             $title,
             $audioLanguage,
             $subtitlingLanguage
         );
-        $commandIo->success('The manifest was successfully generated.');
+        $commandIo->success('The program manifest was successfully generated.');
     }
 }

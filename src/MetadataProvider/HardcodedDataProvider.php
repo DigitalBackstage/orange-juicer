@@ -8,7 +8,6 @@ final class HardcodedDataProvider implements MetadataProvider
     {
         return [
             'multi_format_set' => [
-                'type' => 'program',
                 'encoding' => [
                     'platform' => 'CMS',
                     'delivery' => 'CE',

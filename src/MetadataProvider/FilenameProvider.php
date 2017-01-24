@@ -8,7 +8,7 @@ final class FilenameProvider implements FilePathAwareMetadataProvider
 
     public function provideData()
     {
-        if (!preg_match('#_MPEG(50)?.[mM][pP][gG]$#', $this->filePath, $matches)) {
+        if (!preg_match('#_MPEG(\d+)?(_Trailer)?.[mM][pP][gG]$#', $this->filePath, $matches)) {
             throw new \UnexpectedValueException(sprintf(
                 'file "%s" is badly named',
                 $this->filePath

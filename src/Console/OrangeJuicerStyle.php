@@ -2,7 +2,6 @@
 
 namespace DigitalBackstage\OrangeJuicer\Console;
 
-use DigitalBackstage\OrangeJuicer\Console\OrangeJuicerQuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;

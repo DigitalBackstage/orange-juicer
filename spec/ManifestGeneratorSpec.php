@@ -37,15 +37,6 @@ class ManifestGeneratorSpec extends ObjectBehavior
         $filesystem->write(Argument::any(), Argument::containingString(
             'encoding="utf-8"'
         ))->shouldBeCalled();
-        $this->generateManifest('movie.mpg', 'Some title', 'FRA', 'FRA');
-    }
-
-    function it_produces_a_manifest_containing_the_provided_title(
-        FilesystemInterface $filesystem
-    ) {
-        $filesystem->write(Argument::any(), Argument::containingString(
-            '<title_1>Some title</title_1>'
-        ))->shouldBeCalled();
-        $this->generateManifest('movie.mpg', 'Some title', 'FRA', 'FRA');
+        $this->generateProgramManifest('movie.mpg', 'Some title', 'FRA', 'FRA');
     }
 }
