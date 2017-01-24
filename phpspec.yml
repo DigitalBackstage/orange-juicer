@@ -1,0 +1,4 @@
+suites:
+    orange_juicer_suite:
+        namespace: DigitalBackstage\OrangeJuicer
+        psr4_prefix: DigitalBackstage\OrangeJuicer

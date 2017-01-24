@@ -1,0 +1,10 @@
+version: '2'
+services:
+  orange_juicer:
+    entrypoint: docker/dev-entrypoint.sh
+    volumes:
+      - $PATH_TO_MASTERS:/data
+      - ..:/srv
+    environment:
+      - UNIX_UID=$UNIX_UID
+      - UNIX_GID=$UNIX_GID

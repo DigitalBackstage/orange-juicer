@@ -1,0 +1,8 @@
+version: '2'
+services:
+  orange_juicer:
+    image: digitalbackstage/orange-juicer
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: tail -f /etc/os-release
