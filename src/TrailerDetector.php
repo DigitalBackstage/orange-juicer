@@ -16,7 +16,7 @@ class TrailerDetector
     public function getTrailerFilename(string $programFilename): string
     {
         return preg_replace(
-            '|MPEG\d+\.\mpg|',
+            '|MPEG\d+\.mpg$|',
             'MPEG15_Trailer.mpg',
             $programFilename
         );

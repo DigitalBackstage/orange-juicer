@@ -1,0 +1,39 @@
+branches:
+  only:
+    - master
+
+language: php
+
+php:
+  - 7.1
+
+services:
+  - docker
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
+install:
+  - composer update --prefer-dist
+
+before_script:
+  - IMAGE="digitalbackstage/orange-juicer"
+
+script:
+  - composer validate
+  - make .env
+  - docker-compose build
+  - docker run --rm $IMAGE composer install && vendor/bin/phpspec run
+
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker push $IMAGE;
+    fi
+  - if [ -n "$TRAVIS_TAG" ]; then
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    TAGGED_IMAGE="${IMAGE}:${TRAVIS_TAG}";
+    docker tag $IMAGE $TAGGED_IMAGE;
+    docker push $TAGGED_IMAGE;
+    fi
