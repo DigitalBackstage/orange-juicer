@@ -12,7 +12,7 @@ An XML manifest named `IDWON_MPEG.mpg.xml` should be produced.
 ### Docker image
 
 ```sh
-docker run -it --user=www-data \
+docker run -it \
 	-v ~/path/to/master:/data \
 	-e FS_ROOT='/data' \
 	-e PRODUCTION_COMPANY='UNIVERSCINE' \
