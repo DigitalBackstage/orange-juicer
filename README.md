@@ -15,10 +15,10 @@ An XML manifest named `IDWON_MPEG.mpg.xml` should be produced.
 docker run -it \
 	-v ~/path/to/master:/data \
 	-e FS_ROOT='/data' \
-	-e PRODUCTION_COMPANY='UNIVERSCINE' \
-	-e FIRM='USC' \
+	-e PRODUCTION_COMPANY='MADE_UP_COMPANY' \
+	-e FIRM='MUC' \
 	digitalbackstage/orange-juicer su-exec $(id -u):$(id -g) \
-	bin/orange_juicer generate-manifest 621982-HD-ES_fronteras_MPEG.mpg
+	bin/orange_juicer generate-manifest IDWON_MPEG.mpg
 ```
 
 ### Native usage
@@ -27,6 +27,6 @@ Install php, Composer and then, you may run, from the directory of the project:
 
 ```sh
 composer install
-FS_ROOT='/path/to/master' PRODUCTION_COMPANY='UNIVERSCINE' FIRM='USC' \
+FS_ROOT='/path/to/master' PRODUCTION_COMPANY='MADE_UP_COMPANY' FIRM='MUC' \
 	bin/orange_juicer generate-manifest IDWON_MPEG.mpg
 ```
