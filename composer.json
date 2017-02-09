@@ -1,5 +1,5 @@
 {
-    "name": "digital-backstage/orange_juicer",
+    "name": "digital-backstage/orange-juicer",
     "description": "Produces XML metadata as per the Orange specifications",
     "type": "project",
     "config": {
@@ -8,6 +8,7 @@
     "require": {
         "league/flysystem": "^1.0",
         "mhor/php-mediainfo": "^3.0",
+        "php-components/isocodes": "1.0.0-beta2",
         "symfony/console": "^3.2",
         "symfony/dependency-injection": "^3.2",
         "symfony/dotenv": "@dev",

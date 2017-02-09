@@ -11,6 +11,7 @@ use DigitalBackstage\OrangeJuicer\MetadataProvider\HardcodedDataProvider;
 use DigitalBackstage\OrangeJuicer\MetadataProvider\InputDataProvider;
 use DigitalBackstage\OrangeJuicer\MetadataProvider\MediaInfoProvider;
 use DigitalBackstage\OrangeJuicer\TrailerDetector;
+use ISOCodes\ISO639_2\Adapter\Json;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use Mhor\MediaInfo\MediaInfo;
@@ -87,26 +88,23 @@ $container->register('manifest_generator', ManifestGenerator::class)
         ]
     ]);
 
-$container->setParameter(
-    'available_languages',
-    Yaml::parse(file_get_contents(__DIR__ . '/languages.yml'))
-);
+$container->register('language_code_provider', Json::class);
 
 $container->register('generate_manifest_command', GenerateManifestCommand::class)
     ->setPublic(false)
     ->setArguments([
         new Reference('manifest_generator'),
         new Reference('trailer_detector'),
-        $container->getParameter('available_languages')
+        new Reference('language_code_provider')
     ]);
 
 $container->register('list_languages_command', ListAvailableLanguagesCommand::class)
     ->setPublic(false)
-    ->addArgument($container->getParameter('available_languages'));
+    ->addArgument(new Reference('language_code_provider'));
 
 
 $container->register('application', Application::class)
-    ->addArgument('orange_juicer')
+    ->addArgument('orange-juicer')
     ->addMethodCall('add', [new Reference('generate_manifest_command')])
     ->addMethodCall('add', [new Reference('list_languages_command')]);
 

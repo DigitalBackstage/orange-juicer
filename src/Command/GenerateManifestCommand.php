@@ -5,6 +5,7 @@ namespace DigitalBackstage\OrangeJuicer\Command;
 use DigitalBackstage\OrangeJuicer\Console\OrangeJuicerStyle;
 use DigitalBackstage\OrangeJuicer\ManifestGenerator;
 use DigitalBackstage\OrangeJuicer\TrailerDetector;
+use ISOCodes\ISO639_2\Adapter\Json;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,17 +14,17 @@ use Symfony\Component\Console\Output\OutputInterface;
 class GenerateManifestCommand extends Command
 {
     private $manifestGenerator;
-    private $availableLanguages;
+    private $languageCodeProvider;
 
     public function __construct(
         ManifestGenerator $manifestGenerator,
         TrailerDetector $trailerDetector,
-        array $availableLanguages
+        Json $languageCodeProvider
     ) {
         parent::__construct('generate-manifest');
         $this->manifestGenerator = $manifestGenerator;
         $this->trailerDetector = $trailerDetector;
-        $this->availableLanguages = $availableLanguages;
+        $this->languageCodeProvider = $languageCodeProvider;
     }
 
     public function configure()
@@ -40,6 +41,12 @@ class GenerateManifestCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $availableLanguages = [];
+        foreach ($this->languageCodeProvider->getAll() as $code) {
+            $availableLanguages[strtoupper($code->getAlpha3())] = strtolower(
+                $code->getName()
+            );
+        }
         $commandIo = new OrangeJuicerStyle($input, $output);
         $commandIo->title("Let's generate a manifest, shall we?");
         $title = $commandIo->ask('Title', null, function ($value) {
@@ -51,12 +58,12 @@ class GenerateManifestCommand extends Command
         });
         $audioLanguage = $commandIo->choice(
             'Pick an audio language (defaults to french)',
-            $this->availableLanguages,
+            $availableLanguages,
             'FRA'
         );
         $subtitlingLanguage = $commandIo->choice(
             'Pick a subtitle language (optional)',
-            $this->availableLanguages,
+            $availableLanguages,
             null
         );
         $filePath = $input->getArgument('filePath');
