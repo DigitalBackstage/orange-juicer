@@ -18,7 +18,7 @@ docker run -it \
 	-e PRODUCTION_COMPANY='MADE_UP_COMPANY' \
 	-e FIRM='MUC' \
 	digitalbackstage/orange-juicer su-exec $(id -u):$(id -g) \
-	bin/orange_juicer generate-manifest IDWON_MPEG.mpg
+	bin/orange-juicer generate-manifest IDWON_MPEG.mpg
 ```
 
 ### Native usage
@@ -28,5 +28,5 @@ Install php, Composer and then, you may run, from the directory of the project:
 ```sh
 composer install
 FS_ROOT='/path/to/master' PRODUCTION_COMPANY='MADE_UP_COMPANY' FIRM='MUC' \
-	bin/orange_juicer generate-manifest IDWON_MPEG.mpg
+	bin/orange-juicer generate-manifest IDWON_MPEG.mpg
 ```

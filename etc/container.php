@@ -106,7 +106,7 @@ $container->register('list_languages_command', ListAvailableLanguagesCommand::cl
 
 
 $container->register('application', Application::class)
-    ->addArgument('orange_juicer')
+    ->addArgument('orange-juicer')
     ->addMethodCall('add', [new Reference('generate_manifest_command')])
     ->addMethodCall('add', [new Reference('list_languages_command')]);
 

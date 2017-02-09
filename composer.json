@@ -1,5 +1,5 @@
 {
-    "name": "digital-backstage/orange_juicer",
+    "name": "digital-backstage/orange-juicer",
     "description": "Produces XML metadata as per the Orange specifications",
     "type": "project",
     "config": {
