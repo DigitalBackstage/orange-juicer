@@ -72,7 +72,12 @@ class ManifestGenerator
         string $subtitlingLanguage = null,
         bool $isTrailer
     ) {
-        $manifestPath = "$filePath.xml";
+        $manifestPath = substr(
+            $filePath,
+            0,
+            -strlen('.' . pathinfo($filePath, PATHINFO_EXTENSION))
+        ) . '.xml';
+
         if ($this->filesystem->has($manifestPath)) {
             throw new \RuntimeException("$manifestPath already exists!");
         }
