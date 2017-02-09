@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4cd988a99dd1e242389e56521e6f995d",
-    "content-hash": "ce66372e747d44f8374de7c120ddde76",
+    "hash": "24d143560f8425ef45217ca404cc06d2",
+    "content-hash": "ac502c8f51f9287bb6da0b850ed9ef0f",
     "packages": [
         {
             "name": "league/flysystem",
@@ -135,6 +135,39 @@
             ],
             "description": "PHP wrapper around the mediainfo command",
             "time": "2017-01-17 22:45:20"
+        },
+        {
+            "name": "php-components/isocodes",
+            "version": "v1.0.0-beta.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-components/isocodes.git",
+                "reference": "b2a407c60e77091b5259284f2891f829465059b3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-components/isocodes/zipball/b2a407c60e77091b5259284f2891f829465059b3",
+                "reference": "b2a407c60e77091b5259284f2891f829465059b3",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.4 || ^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8 || ^5.2.10"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ISOCodes\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPLv3"
+            ],
+            "description": "PHP implementation of ISO codes package",
+            "time": "2016-10-25 15:23:05"
         },
         {
             "name": "psr/log",
@@ -1493,6 +1526,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "php-components/isocodes": 10,
         "symfony/dotenv": 20
     },
     "prefer-stable": false,
